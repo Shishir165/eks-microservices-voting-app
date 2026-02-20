@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: result
-        image: shishir165/result:v1.1
+        image: shishir165/result:v2
         ports:
         - containerPort: 80

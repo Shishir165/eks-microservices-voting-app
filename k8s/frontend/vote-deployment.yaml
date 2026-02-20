@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: vote
-        image: shishir165/vote:v1.1
+        image: shishir165/vote:v2
         ports:
         - containerPort: 80
