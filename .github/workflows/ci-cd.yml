@@ -1,4 +1,4 @@
-name: Deploy to EKS
+name: Deploy to Amazon EKS
 
 on:
   push:
@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Checkout repository
       uses: actions/checkout@v4
 
     - name: Configure AWS credentials
@@ -21,7 +21,7 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-central-1
 
-    - name: Setup kubectl
+    - name: Install kubectl
       uses: azure/setup-kubectl@v4
       with:
         version: latest
@@ -38,4 +38,3 @@ jobs:
         kubectl apply -f k8s/backend/
         kubectl apply -f k8s/frontend/
         kubectl apply -f k8s/ingress.yaml
-        
