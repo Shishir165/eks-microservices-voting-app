@@ -13,21 +13,44 @@ spec:
         app: worker
     spec:
       containers:
-      - name: worker
-        image: shishir165/worker:v1.1
-        env:
-        - name: POSTGRES_HOST
-          value: db
-        - name: POSTGRES_PORT
-          value: "5432"
-        - name: POSTGRES_USER
-          value: postgres
-        - name: POSTGRES_PASSWORD
-          value: postgres
-        - name: POSTGRES_DB
-          value: votes
-        - name: REDIS_HOST
-          value: redis
-        - name: REDIS_PORT
-          value: "6379"
-      
+        - name: worker
+          image: shishir165/worker:v1.1
+
+          env:
+            - name: POSTGRES_HOST
+              value: db
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: POSTGRES_DB
+
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - echo ok
+            initialDelaySeconds: 20
+            periodSeconds: 30
+
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - echo ok
+            initialDelaySeconds: 10
+            periodSeconds: 20

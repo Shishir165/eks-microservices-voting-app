@@ -13,12 +13,27 @@ spec:
         app: vote
     spec:
       containers:
-      - name: vote
-        image: shishir165/vote:v1.1
-        ports:
-        - containerPort: 80
-        env:
-        - name: REDIS_HOST
-          value: redis
-        - name: REDIS_PORT
-          value: "6379"
+        - name: vote
+          image: shishir165/vote:v1.1
+          ports:
+            - containerPort: 80
+
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 15
+
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+          env:
+            - name: REDIS_HOST
+              value: redis
+            - name: REDIS_PORT
+              value: "6379"
