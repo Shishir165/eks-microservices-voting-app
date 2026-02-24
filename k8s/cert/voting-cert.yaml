@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: voting-app-cert
+  namespace: default
+spec:
+  secretName: voting-app-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+    - vote.diogohack.shop
+    - result.diogohack.shop
